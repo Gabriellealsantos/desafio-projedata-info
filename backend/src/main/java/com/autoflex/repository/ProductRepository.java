@@ -18,6 +18,10 @@ public class ProductRepository implements PanacheRepository<Product> {
                 .list();
     }
 
+    public List<Product> findAllOrderByValueDesc() {
+        return findAll(Sort.by("value").descending()).list();
+    }
+
     public void softDelete(Long id) {
         update("active = false WHERE id = ?1", id);
     }

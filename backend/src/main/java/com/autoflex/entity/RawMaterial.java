@@ -6,12 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
 @Table(name = "raw_material")
+@SQLRestriction("active = 1")
 public class RawMaterial {
 
     @Id
@@ -23,6 +25,9 @@ public class RawMaterial {
 
     @Column(name = "stock_quantity", nullable = false, precision = 19, scale = 4)
     private BigDecimal stockQuantity;
+
+    @Column(nullable = false)
+    private boolean active = true;
 
     public RawMaterial() {
     }
@@ -56,6 +61,10 @@ public class RawMaterial {
     public void setStockQuantity(BigDecimal stockQuantity) {
         this.stockQuantity = stockQuantity;
     }
+
+    public boolean isActive() { return active; }
+
+    public void setActive(boolean active) { this.active = active; }
 
     @Override
     public boolean equals(Object o) {

@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -17,6 +18,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "product_raw_material", uniqueConstraints = @UniqueConstraint(columnNames = { "product_id",
         "raw_material_id" }))
+@SQLRestriction("active = 1")
 public class ProductRawMaterial {
 
     @Id
@@ -33,6 +35,9 @@ public class ProductRawMaterial {
 
     @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal quantity;
+
+    @Column(nullable = false)
+    private boolean active = true;
 
     public ProductRawMaterial() {
     }
@@ -75,6 +80,10 @@ public class ProductRawMaterial {
     public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
+
+    public boolean isActive() { return active; }
+
+    public void setActive(boolean active) { this.active = active; }
 
     @Override
     public boolean equals(Object o) {

@@ -146,7 +146,7 @@ Antes de começar, certifique-se de ter instalado:
 
 ## 🐳 Configuração do Banco de Dados
 
-### 1. Subir o Oracle Database no Docker
+Após o banco baixado e configurado
 
 ### 1. Criar o usuário do banco de dados
 

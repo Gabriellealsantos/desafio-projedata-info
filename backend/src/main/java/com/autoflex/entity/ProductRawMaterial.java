@@ -19,7 +19,7 @@ import java.util.Objects;
 @Table(name = "product_raw_material", uniqueConstraints = @UniqueConstraint(columnNames = { "product_id",
         "raw_material_id" }))
 @SQLRestriction("active = 1")
-public class ProductRawMaterial {
+public class ProductRawMaterial extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

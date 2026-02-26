@@ -29,17 +29,13 @@ public class ProductService {
         this.productRawMaterialRepository = productRawMaterialRepository;
     }
 
-    // Paginado para garantir escalabilidade
     public PageResponseDTO<ProductResponseDTO> findAll(int pageIndex, int pageSize) {
-        // 1. Cria a query paginada do Panache
         PanacheQuery<Product> query = productRepository.findAll(Sort.by("name").ascending())
                 .page(Page.of(pageIndex, pageSize));
 
-        // 2. Mapeia a página atual para DTOs
-        List<ProductResponseDTO> items = query.stream()
+        List<ProductResponseDTO> items = query.list().stream()
                 .map(ProductMapper::toResponse)
                 .toList();
-
 
         return new PageResponseDTO<>(
                 items,

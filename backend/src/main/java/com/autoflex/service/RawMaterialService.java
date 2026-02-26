@@ -24,7 +24,7 @@ public class RawMaterialService {
     private final ProductRawMaterialRepository productRawMaterialRepository;
 
     public RawMaterialService(RawMaterialRepository rawMaterialRepository,
-                              ProductRawMaterialRepository productRawMaterialRepository) {
+            ProductRawMaterialRepository productRawMaterialRepository) {
         this.rawMaterialRepository = rawMaterialRepository;
         this.productRawMaterialRepository = productRawMaterialRepository;
     }
@@ -33,7 +33,7 @@ public class RawMaterialService {
         PanacheQuery<RawMaterial> query = rawMaterialRepository.findAll(Sort.by("name").ascending())
                 .page(Page.of(pageIndex, pageSize));
 
-        List<RawMaterialResponseDTO> items = query.stream()
+        List<RawMaterialResponseDTO> items = query.list().stream()
                 .map(RawMaterialMapper::toResponse)
                 .toList();
 
@@ -42,8 +42,7 @@ public class RawMaterialService {
                 pageIndex,
                 pageSize,
                 query.count(),
-                query.pageCount()
-        );
+                query.pageCount());
     }
 
     public RawMaterialResponseDTO findById(Long id) {
@@ -79,7 +78,7 @@ public class RawMaterialService {
         RawMaterial rawMaterial = rawMaterialRepository.findByIdOptional(id)
                 .orElseThrow(() -> new ResourceNotFoundException("RawMaterial", id));
 
-        long usageCount = productRawMaterialRepository.count("rawMaterial.id = ?1 AND active = 1", id);
+        long usageCount = productRawMaterialRepository.count("rawMaterial.id = ?1 AND active = true", id);
 
         if (usageCount > 0) {
             throw new BusinessException("Cannot delete raw material '" + rawMaterial.getName() +

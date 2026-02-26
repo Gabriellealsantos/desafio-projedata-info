@@ -15,6 +15,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ProductRawMaterialService {
@@ -34,7 +37,7 @@ public class ProductRawMaterialService {
     public List<ProductRawMaterialResponseDTO> findByProductId(Long productId) {
         validateProductExists(productId);
         return productRawMaterialRepository.findByProductId(productId).stream()
-                .filter(ProductRawMaterial::isActive) // Prevenção extra, embora o @SQLRestriction já faça isso
+                .filter(ProductRawMaterial::isActive)
                 .map(ProductRawMaterialMapper::toResponse)
                 .toList();
     }
@@ -65,6 +68,30 @@ public class ProductRawMaterialService {
     }
 
     @Transactional
+    public List<ProductRawMaterialResponseDTO> addMultipleRawMaterials(Long productId, List<ProductRawMaterialCreateDTO> dtos) {
+        Product product = productRepository.findByIdOptional(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", productId));
+
+        List<Long> rmIds = dtos.stream().map(ProductRawMaterialCreateDTO::rawMaterialId).toList();
+
+        Map<Long, RawMaterial> rawMaterialsMap = rawMaterialRepository.find("id in ?1", rmIds)
+                .stream().collect(Collectors.toMap(RawMaterial::getId, rm -> rm));
+
+        return dtos.stream().map(dto -> {
+            RawMaterial rm = Optional.ofNullable(rawMaterialsMap.get(dto.rawMaterialId()))
+                    .orElseThrow(() -> new ResourceNotFoundException("RawMaterial", dto.rawMaterialId()));
+
+            ProductRawMaterial entity = new ProductRawMaterial();
+            entity.setProduct(product);
+            entity.setRawMaterial(rm);
+            entity.setQuantity(dto.quantity());
+            entity.setActive(true);
+
+            productRawMaterialRepository.persist(entity);
+            return ProductRawMaterialMapper.toResponse(entity);
+        }).toList();
+    }
+    @Transactional
     public ProductRawMaterialResponseDTO updateQuantity(Long productId, Long rawMaterialId, ProductRawMaterialCreateDTO dto) {
         validateProductExists(productId);
 
@@ -79,7 +106,6 @@ public class ProductRawMaterialService {
         }
 
         entity.setQuantity(dto.quantity());
-        // O Panache atualizará automaticamente no commit do @Transactional
         return ProductRawMaterialMapper.toResponse(entity);
     }
 

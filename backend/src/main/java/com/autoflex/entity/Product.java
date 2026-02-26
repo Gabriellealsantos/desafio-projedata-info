@@ -11,7 +11,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "product")
 @SQLRestriction("active = 1")
-public class Product {
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

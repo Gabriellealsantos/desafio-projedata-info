@@ -29,6 +29,9 @@ public class RawMaterialService {
         this.productRawMaterialRepository = productRawMaterialRepository;
     }
 
+    /**
+     * Retorna uma lista paginada de todas as matérias-primas, ordenadas por nome.
+     */
     public PageResponseDTO<RawMaterialResponseDTO> findAll(int pageIndex, int pageSize) {
         PanacheQuery<RawMaterial> query = rawMaterialRepository.findAll(Sort.by("name").ascending())
                 .page(Page.of(pageIndex, pageSize));
@@ -45,12 +48,18 @@ public class RawMaterialService {
                 query.pageCount());
     }
 
+    /**
+     * Busca uma matéria-prima específica através do seu ID único.
+     */
     public RawMaterialResponseDTO findById(Long id) {
         RawMaterial rawMaterial = rawMaterialRepository.findByIdOptional(id)
                 .orElseThrow(() -> new ResourceNotFoundException("RawMaterial", id));
         return RawMaterialMapper.toResponse(rawMaterial);
     }
 
+    /**
+     * Registra uma nova matéria-prima no sistema após validar a unicidade do nome.
+     */
     @Transactional
     public RawMaterialResponseDTO create(RawMaterialCreateDTO dto) {
         validateUniqueName(dto.name(), null);
@@ -62,6 +71,9 @@ public class RawMaterialService {
         return RawMaterialMapper.toResponse(rawMaterial);
     }
 
+    /**
+     * Atualiza os dados de uma matéria-prima já existente.
+     */
     @Transactional
     public RawMaterialResponseDTO update(Long id, RawMaterialCreateDTO dto) {
         RawMaterial rawMaterial = rawMaterialRepository.findByIdOptional(id)
@@ -73,12 +85,16 @@ public class RawMaterialService {
         return RawMaterialMapper.toResponse(rawMaterial);
     }
 
+
+    /**
+     * Realiza a exclusão lógica, impedindo a remoção se houver vínculo com produtos ativos.
+     */
     @Transactional
     public void delete(Long id) {
         RawMaterial rawMaterial = rawMaterialRepository.findByIdOptional(id)
                 .orElseThrow(() -> new ResourceNotFoundException("RawMaterial", id));
 
-        long usageCount = productRawMaterialRepository.count("rawMaterial.id = ?1 AND active = true", id);
+        long usageCount = productRawMaterialRepository.count("rawMaterial.id = ?1 AND active = ?2", id, true);
 
         if (usageCount > 0) {
             throw new BusinessException("Cannot delete raw material '" + rawMaterial.getName() +
@@ -88,6 +104,9 @@ public class RawMaterialService {
         rawMaterial.setActive(false);
     }
 
+    /**
+     * Valida se já existe uma matéria-prima cadastrada com o mesmo nome.
+     */
     private void validateUniqueName(String name, Long excludeId) {
         rawMaterialRepository.find("name", name).firstResultOptional()
                 .ifPresent(existing -> {

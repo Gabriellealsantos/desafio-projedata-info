@@ -34,6 +34,10 @@ public class ProductRawMaterialService {
         this.rawMaterialRepository = rawMaterialRepository;
     }
 
+
+    /**
+     * Lista todas as matérias-primas vinculadas a um produto específico.
+     */
     public List<ProductRawMaterialResponseDTO> findByProductId(Long productId) {
         validateProductExists(productId);
         return productRawMaterialRepository.findByProductId(productId).stream()
@@ -42,6 +46,9 @@ public class ProductRawMaterialService {
                 .toList();
     }
 
+    /**
+     * Associa uma matéria-prima a um produto, validando se o vínculo já existe.
+     */
     @Transactional
     public ProductRawMaterialResponseDTO addRawMaterialToProduct(Long productId, ProductRawMaterialCreateDTO dto) {
         Product product = productRepository.findByIdOptional(productId)
@@ -67,6 +74,9 @@ public class ProductRawMaterialService {
         return ProductRawMaterialMapper.toResponse(entity);
     }
 
+    /**
+     * Realiza a associação em lote de múltiplas matérias-primas a um produto.
+     */
     @Transactional
     public List<ProductRawMaterialResponseDTO> addMultipleRawMaterials(Long productId, List<ProductRawMaterialCreateDTO> dtos) {
         Product product = productRepository.findByIdOptional(productId)
@@ -91,6 +101,10 @@ public class ProductRawMaterialService {
             return ProductRawMaterialMapper.toResponse(entity);
         }).toList();
     }
+
+    /**
+     * Atualiza a quantidade necessária de uma matéria-prima em um vínculo ativo.
+     */
     @Transactional
     public ProductRawMaterialResponseDTO updateQuantity(Long productId, Long rawMaterialId, ProductRawMaterialCreateDTO dto) {
         validateProductExists(productId);
@@ -109,6 +123,9 @@ public class ProductRawMaterialService {
         return ProductRawMaterialMapper.toResponse(entity);
     }
 
+    /**
+     * Inativa o vínculo entre uma matéria-prima e um produto (exclusão lógica).
+     */
     @Transactional
     public void removeRawMaterialFromProduct(Long productId, Long rawMaterialId) {
         validateProductExists(productId);
@@ -122,6 +139,9 @@ public class ProductRawMaterialService {
         entity.setActive(false);
     }
 
+    /**
+     * Verifica a existência do produto para garantir a integridade da operação.
+     */
     private void validateProductExists(Long productId) {
         productRepository.findByIdOptional(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", productId));

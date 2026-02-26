@@ -28,7 +28,7 @@ public class ProductionSuggestionService {
     }
 
     /**
-     * Prioriza os produtos de maior valor.
+     * Gera uma sugestão de produção priorizando itens de maior valor agregado com base no estoque atual.
      */
     public ProductionSuggestionResponseDTO calculateSuggestion() {
 
@@ -71,6 +71,9 @@ public class ProductionSuggestionService {
         return new ProductionSuggestionResponseDTO(items, totalValue);
     }
 
+    /**
+     * Calcula a quantidade máxima de um produto que pode ser fabricada considerando o limitante do estoque de insumos.
+     */
     private Long calculateMaxProducibleQuantity(List<ProductRawMaterial> composition, Map<Long, BigDecimal> availableStock) {
         long maxProducible = Long.MAX_VALUE;
 
@@ -93,6 +96,9 @@ public class ProductionSuggestionService {
         return maxProducible == Long.MAX_VALUE ? 0 : maxProducible;
     }
 
+    /**
+     * Abate virtualmente os materiais consumidos do estoque em memória para o cálculo do próximo item da lista.
+     */
     private void deductConsumedMaterials(List<ProductRawMaterial> composition, Map<Long, BigDecimal> availableStock, long quantityProduced) {
         for (ProductRawMaterial prm : composition) {
             if (!prm.isActive() || !prm.getRawMaterial().isActive()) {

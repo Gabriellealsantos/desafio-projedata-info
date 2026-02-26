@@ -6,7 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -27,6 +29,7 @@ public class RawMaterial extends BaseEntity {
     private BigDecimal stockQuantity;
 
     @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.SMALLINT)
     private boolean active = true;
 
     public RawMaterial() {
@@ -62,9 +65,13 @@ public class RawMaterial extends BaseEntity {
         this.stockQuantity = stockQuantity;
     }
 
-    public boolean isActive() { return active; }
+    public boolean isActive() {
+        return active;
+    }
 
-    public void setActive(boolean active) { this.active = active; }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     @Override
     public boolean equals(Object o) {

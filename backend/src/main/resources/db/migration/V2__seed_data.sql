@@ -1,6 +1,5 @@
--- ============================================
--- V2: Seed data for testing
--- ============================================
+-- Carga inicial de dados (Seed) para fins de teste e demonstração.
+-- Inclui insumos industriais, produtos acabados e suas respectivas fichas técnicas.
 
 -- Raw Materials (Matérias-Primas)
 INSERT INTO raw_material (name, stock_quantity) VALUES ('Steel Sheet', 500.0000);

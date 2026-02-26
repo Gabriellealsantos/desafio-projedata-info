@@ -1,7 +1,9 @@
 package com.autoflex.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class Product extends BaseEntity {
     private BigDecimal value;
 
     @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.SMALLINT)
     private boolean active = true;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -62,9 +65,13 @@ public class Product extends BaseEntity {
         this.value = value;
     }
 
-    public boolean isActive() { return active; }
+    public boolean isActive() {
+        return active;
+    }
 
-    public void setActive(boolean active) { this.active = active; }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public List<ProductRawMaterial> getRawMaterials() {
         return rawMaterials;
@@ -79,7 +86,6 @@ public class Product extends BaseEntity {
         rawMaterials.remove(prm);
         prm.setProduct(null);
     }
-
 
     @Override
     public boolean equals(Object o) {

@@ -29,6 +29,9 @@ public class ProductService {
         this.productRawMaterialRepository = productRawMaterialRepository;
     }
 
+    /**
+     * Retorna uma lista paginada de todos os produtos ordenados por nome.
+     */
     public PageResponseDTO<ProductResponseDTO> findAll(int pageIndex, int pageSize) {
         PanacheQuery<Product> query = productRepository.findAll(Sort.by("name").ascending())
                 .page(Page.of(pageIndex, pageSize));
@@ -46,12 +49,18 @@ public class ProductService {
         );
     }
 
+    /**
+     * Busca um produto pelo seu identificador único.
+     */
     public ProductResponseDTO findById(Long id) {
         Product product = productRepository.findByIdOptional(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", id));
         return ProductMapper.toResponse(product);
     }
 
+    /**
+     * Cria um novo produto garantindo que o nome seja único no sistema.
+     */
     @Transactional
     public ProductResponseDTO create(ProductCreateDTO dto) {
         validateUniqueName(dto.name(), null);
@@ -63,6 +72,9 @@ public class ProductService {
         return ProductMapper.toResponse(product);
     }
 
+    /**
+     * Atualiza os dados de um produto existente.
+     */
     @Transactional
     public ProductResponseDTO update(Long id, ProductCreateDTO dto) {
         Product product = productRepository.findByIdOptional(id)
@@ -74,6 +86,9 @@ public class ProductService {
         return ProductMapper.toResponse(product);
     }
 
+    /**
+     * Executa a exclusão lógica do produto e inativa todos os seus vínculos com matérias-primas.
+     */
     @Transactional
     public void delete(Long id) {
         Product product = productRepository.findByIdOptional(id)
@@ -84,6 +99,9 @@ public class ProductService {
         productRawMaterialRepository.update("active = false WHERE product.id = ?1", product.getId());
     }
 
+    /**
+     * Valida se o nome do produto já está em uso, permitindo ignorar o próprio ID em atualizações.
+     */
     private void validateUniqueName(String name, Long excludeId) {
         productRepository.find("name", name).firstResultOptional()
                 .ifPresent(existing -> {

@@ -10,7 +10,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -37,6 +39,7 @@ public class ProductRawMaterial extends BaseEntity {
     private BigDecimal quantity;
 
     @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.SMALLINT)
     private boolean active = true;
 
     public ProductRawMaterial() {
@@ -81,9 +84,13 @@ public class ProductRawMaterial extends BaseEntity {
         this.quantity = quantity;
     }
 
-    public boolean isActive() { return active; }
+    public boolean isActive() {
+        return active;
+    }
 
-    public void setActive(boolean active) { this.active = active; }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     @Override
     public boolean equals(Object o) {

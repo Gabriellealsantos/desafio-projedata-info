@@ -14,14 +14,13 @@
 
 **Sistema de controle de estoque e sugestão de produção**
 
-[Sobre](#-sobre) •
-[Tech Stack](#-tech-stack) •
-[Arquitetura](#-arquitetura) •
-[Pré-requisitos](#-pré-requisitos) •
-[Configuração](#-configuração-do-banco-de-dados) •
-[Executando](#-executando-a-aplicação) •
-[Endpoints](#-endpoints-da-api) •
-[Algoritmo](#-algoritmo-de-sugestão-de-produção)
+[Sobre](#sobre) •
+[Tech Stack](#tech-stack) •
+[Arquitetura](#backend-architecture) •
+[Pré-requisitos](#pré-requisitos) •
+[Configuração](#configuração-do-banco-de-dados) •
+[Executando](#executando-a-aplicação) •
+[Endpoints](#endpoints-da-api)
 
 </div>
 

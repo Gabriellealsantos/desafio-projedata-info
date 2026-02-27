@@ -14,15 +14,6 @@
 
 **Sistema de controle de estoque e sugestão de produção**
 
-[Sobre](#sobre) •
-[Tech Stack](#tech-stack) •
-[Arquitetura](#arquitetura) •
-[Pré-requisitos](#pre-requisitos) •
-[Configuração](#configuracao) •
-[Executando](#executando) •
-[Endpoints](#endpoints) •
-[Algoritmo](#algoritmo)
-
 </div>
 
 ---
@@ -130,7 +121,7 @@ com.autoflex/
     ├── BusinessException           → 400
     └── GlobalExceptionHandler      → @ServerExceptionMapper
 ```
-
+---
 ### 📐 Frontend Architecture
 O front-end utiliza uma estrutura baseada em **Feature-Driven Development** (agrupamento por responsabilidade) com forte separação entre UI, lógica de estado e integração com a API:
 ```text

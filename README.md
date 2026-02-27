@@ -7,6 +7,10 @@
 ![Oracle](https://img.shields.io/badge/Oracle-21c_XE-F80000?style=for-the-badge&logo=oracle&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Container-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![React](https://img.shields.io/badge/React-18-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 
 **Sistema de controle de estoque e sugestão de produção**
 
@@ -79,7 +83,7 @@ Sistema desenvolvido como parte do desafio técnico da **Projedata Informática*
 
 ---
 
-## 📐 Arquitetura
+## 📐 Backend Architecture
 
 O projeto segue a **Layered Architecture** (arquitetura em camadas) com o **Repository Pattern**:
 
@@ -126,6 +130,41 @@ com.autoflex/
     ├── BusinessException           → 400
     └── GlobalExceptionHandler      → @ServerExceptionMapper
 ```
+
+### 📐 Frontend Architecture
+O front-end utiliza uma estrutura baseada em **Feature-Driven Development** (agrupamento por responsabilidade) com forte separação entre UI, lógica de estado e integração com a API:
+```text
+frontend/src/
+├── assets/          → Imagens, ícones e arquivos estáticos (ex: logos)
+├── components/      → Componentes visuais reutilizáveis (dump components)
+│   ├── ConfirmDialog    → Modal padrão de confirmação de exclusões
+│   ├── Modal            → Wrapper base de modais da aplicação
+│   ├── Pagination       → Controle de paginação de listas e tabelas
+│   └── Toast            → Sistema de notificações de sucesso/erro
+│
+├── hooks/           → Custom React Hooks (lógica de estado isolada)
+│   └── useProductionSuggestion → Gerencia a complexidade da tela de dashboard
+│
+├── models/          → Interfaces e Tipagens TypeScript
+│   ├── product          → Tipagens (ProductDTO, ProductCreateDTO)
+│   ├── raw-material     → Tipagens (RawMaterialDTO)
+│   └── suggestion       → Tipagens exclusivas do cálculo de produção
+│
+├── routes/          → Telas principais e componentes inteligentes (smart components)
+│   ├── Dashboard        → Sugestão de Produção (RF004 / RF008)
+│   ├── Products         → CRUD de Produtos e Ficha Técnica (RF001 / RF003 / RF005 / RF007)
+│   └── RawMaterials     → CRUD de Matérias-Primas (RF002 / RF006)
+│
+├── services/        → Camada de integração com a API Quarkus (REST)
+│   ├── api              → Instância configurada do Axios (URL base, interceptors)
+│   ├── product-service  → Endpoints de /api/products
+│   └── raw-material-... → Endpoints de /api/raw-materials
+│
+├── test/            → Configurações unificadas do Vitest/Testing Library
+│   └── setup            → Importações do jest-dom global
+│
+└── utils/           → Funções puras e genéricas
+    └── formatCurrency   → Ex: mask para BRL (R$)
 
 ### Padrões Aplicados
 
@@ -198,7 +237,7 @@ cd desafio-projedata-info
 ./mvnw quarkus:dev
 
 # Windows (PowerShell)
-.\mvnw.cmd quarkus:dev
+./mvnw.cmd quarkus:dev
 ```
 
 **O que acontece automaticamente:**
@@ -312,26 +351,17 @@ O Flyway gerencia a evolução do schema automaticamente:
 ### Frontend (React/Vitest)
 
 ```bash
-# Dentro da pasta /frontend
-# Rodar todos os testes em modo headless
+# Entre na pasta do frontend
+cd frontend
+
+# 1. Instale as dependências do projeto (Obrigatório)
+yarn install
+yarn add -D @testing-library/dom
+
+# 2. Rodar todos os testes unitários em modo headless
 yarn test
-```
-
 ---
-
-## 🔧 Comandos Úteis
-
-| Comando                    | Descrição                                  |
-| -------------------------- | ------------------------------------------ |
-| `.\mvnw.cmd quarkus:dev`   | Rodar em modo desenvolvimento (hot-reload) |
-| `.\mvnw.cmd compile`       | Apenas compilar                            |
-| `.\mvnw.cmd test`          | Rodar testes unitários                     |
-| `.\mvnw.cmd package`       | Gerar JAR de produção                      |
-| `docker start oracle-xe`   | Iniciar container Oracle (se parado)       |
-| `docker stop oracle-xe`    | Parar container Oracle                     |
-| `docker logs -f oracle-xe` | Ver logs do Oracle                         |
-
----
+````
 
 ## 👤 Autor
 

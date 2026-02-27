@@ -156,6 +156,7 @@ frontend/src/
 │
 └── utils/           → Funções puras e genéricas
     └── formatCurrency   → Ex: mask para BRL (R$)
+```
 
 ### Padrões Aplicados
 

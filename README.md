@@ -16,11 +16,12 @@
 
 [Sobre](#sobre) •
 [Tech Stack](#tech-stack) •
-[Arquitetura](#backend-architecture) •
-[Pré-requisitos](#pré-requisitos) •
-[Configuração](#configuração-do-banco-de-dados) •
-[Executando](#executando-a-aplicação) •
-[Endpoints](#endpoints-da-api)
+[Arquitetura](#arquitetura) •
+[Pré-requisitos](#pre-requisitos) •
+[Configuração](#configuracao) •
+[Executando](#executando) •
+[Endpoints](#endpoints) •
+[Algoritmo](#algoritmo)
 
 </div>
 

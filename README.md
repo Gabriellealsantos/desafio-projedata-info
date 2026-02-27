@@ -57,6 +57,19 @@ Sistema desenvolvido como parte do desafio técnico da **Projedata Informática*
 | **SmallRye OpenAPI**        | —      | Swagger UI / Documentação automática   |
 | **Jackson**                 | —      | Serialização JSON                      |
 
+### Frontend
+
+| Tecnologia          | Versão | Papel                     |
+| ------------------- | ------ | ------------------------- |
+| **React**           | 19     | Biblioteca de UI          |
+| **TypeScript**      | 5.9    | Tipagem estática          |
+| **Vite**            | 7.3    | Bundler e dev server      |
+| **Tailwind CSS**    | 4.2    | Estilização utilitária    |
+| **React Router**    | 7.13   | Navegação do SPA          |
+| **Axios**           | 1.13   | Cliente HTTP              |
+| **Vitest**          | 4.0    | Testes Unitários          |
+| **Lucide React**    | 0.575  | Ícones SVG                |
+
 ### Banco de Dados
 
 | Tecnologia          | Versão | Papel                     |
@@ -175,10 +188,10 @@ EXIT;
 
 ```bash
 git clone git@github.com:Gabriellealsantos/desafio-projedata-info.git
-cd desafio-projedata-info/desafio-projedata-info
+cd desafio-projedata-info
 ```
 
-### 2. Executar em modo desenvolvimento
+### 2. Executar o Backend em modo desenvolvimento
 
 ```bash
 # Linux/macOS
@@ -205,6 +218,22 @@ A aplicação usa valores padrão, mas você pode customizar via variáveis de a
 | `DB_USER`     | `desafio_projedata_info`                    | Usuário do banco Oracle |
 | `DB_PASSWORD` | `SenhaForte`                                | Senha do banco Oracle   |
 | `DB_URL`      | `jdbc:oracle:thin:@localhost:1521/FREEPDB1` | URL JDBC do Oracle      |
+
+### 4. Executar o Frontend em modo desenvolvimento
+
+Abra um novo terminal na raiz do projeto e acesse a pasta do frontend:
+
+```bash
+cd frontend
+
+# Instalar dependências
+yarn install
+
+# Iniciar o servidor de desenvolvimento
+yarn dev
+```
+
+A aplicação React abrirá automaticamente em `http://localhost:5173`.
 
 ---
 
@@ -269,12 +298,23 @@ O Flyway gerencia a evolução do schema automaticamente:
 
 ## 🧪 Rodando os Testes
 
+### Backend (Quarkus)
+
 ```bash
+# Na raiz do projeto
 # Testes unitários
 .\mvnw.cmd test
 
 # Testes de integração
 .\mvnw.cmd verify
+```
+
+### Frontend (React/Vitest)
+
+```bash
+# Dentro da pasta /frontend
+# Rodar todos os testes em modo headless
+yarn test
 ```
 
 ---
